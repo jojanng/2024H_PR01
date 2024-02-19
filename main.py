@@ -1,16 +1,10 @@
 from util import lire_historique_utilisateur, enregistrer_partie, lire_dictionnaires_mots
 import random
 import os
+from datetime import datetime
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-
-# Squelette du menu principal :
-# Ce code peut être un bon point de départ.
-# Il est possible de le modifier à votre guise ou de l'enlever complètement pour partir de zéro.
-
-
 
 
 #USERNAME LOOP
@@ -67,12 +61,15 @@ while True:
                         difficulte = difficulte_mapping[difficulte_selector]
                         if difficulte in mots:
                             randomWord = random.choice(mots[difficulte])
-                            print(f"mot selon difficulte: {randomWord}")  # temporary
-                
+                        
                     
                 ### COMMENCER LA PARTIE ###
                     #lives = hangman figure (1X HEAD, 2X ARMS, 1X TORSO , 2X LEGS)
                         lives = 6
+                    #PLAYER HAS WON OR LOST , BY DEFAULT LOST CUZ DIDNT START YET
+                        a_gagne = False
+                    #time stamp
+                        start_time = datetime.now()
                     #word count
                         mot_cache = ["_" for _ in randomWord]
                         lettre_trouvee = [] #need to b initialized outside while loop while "_" in mot_cache: or else everytime we write, it overwrites the appended letter we found previously to empty []
@@ -114,6 +111,12 @@ while True:
                                 
                         #lost            
                         if lives <=0:
+                            
+                            a_gagne = False
+                            end_time = datetime.now()
+                            duration = (end_time - start_time).total_seconds()
+                            
+                            enregistrer_partie(nom_utilisateur, randomWord, a_gagne, int(duration))
                             print(f"gg, le mot etait:  {randomWord}")
                             input("Appuyez sur Enter pour continuer...")
                             clear_screen()
@@ -125,6 +128,12 @@ while True:
                         
                         #won
                         elif "_" not in mot_cache and lives >0:
+                            
+                            a_gagne = True
+                        
+                            end_time = datetime.now()
+                            duration = (end_time - start_time).total_seconds()
+                            enregistrer_partie(nom_utilisateur, randomWord, a_gagne, int(duration))
                             print("u won")    
                             input("Appuyez sur Enter pour continuer...")
                             clear_screen()
@@ -135,14 +144,23 @@ while True:
                             
                             break # break this loop to go back to menu
                             
-                else:   
-                    print("Choix invalide, veuillez reessayer\n")
-                continue
+                    else:   
+                        print("Choix invalide, veuillez reessayer")
+                        continue
                 
             
         elif choix_menu_principal == 2:
             # MENU Afficher l'historique de l'utilisateur.
-            print("2")
+            #x=str(nom_utilisateur)
+            historique_joueur = lire_historique_utilisateur(nom_utilisateur)
+            if a_gagne == True:
+                resultat_match = "gagne"
+            else:
+                resultat_match = "perdu"
+            print(f"Historique des parties: \n {randomWord} -{resultat_match} - {int(duration)}secondes")
+                  
+
+            #print(historique_joueur)
         
         else:
             # MENU Afficher un message d'entrée invalide.  
