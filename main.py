@@ -33,7 +33,7 @@ while True:
         #CHOIX 3 : QUITTER 
         if choix_menu_principal == 3:
             clear_screen()
-            print(f"Merci davoir joue {nom_utilisateur}!")
+            print(f"Merci d'avoir joue {nom_utilisateur}!")
             
             break #break the USERNAME LOOP, exit the program, if i add a new while loop, itll break the choix loop and go back to USERNAME LOOP
         
@@ -66,6 +66,72 @@ while True:
                 ### COMMENCER LA PARTIE ###
                     #lives = hangman figure (1X HEAD, 2X ARMS, 1X TORSO , 2X LEGS)
                         lives = 6
+                        hangman_stages = [
+                                        # 6 lives 
+                                        "   +---+\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # 5 lives 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # 4 lives 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "   |   |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # 3 lives 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "  /|   |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # 2 lives 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "  /|\  |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # 1 life 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "  /|\  |\n"
+                                        "  /    |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                        # DEAD 
+                                        "   +---+\n"
+                                        "   |   |\n"
+                                        "   O   |\n"
+                                        "  /|\  |\n"
+                                        "  / \  |\n"
+                                        "       |\n"
+                                        "       |\n"
+                                        " =========\n",
+                                    ]
+                        
                     #PLAYER HAS WON OR LOST , BY DEFAULT LOST CUZ DIDNT START YET
                         a_gagne = False
                     #time stamp
@@ -81,11 +147,11 @@ while True:
                             print("Mot: " + " ".join(mot_cache))
                             print("Lettres trouvees: "+ " ".join(lettre_trouvee))    
                             print("Lettres ratees: "+ " ".join(lettre_ratee))
-                            print("lives" + str(lives))
-                            print(randomWord) # temporary
+                            print(hangman_stages[6 - lives])
+                            #print("lives" + str(lives)) #temporary
+                            #print(randomWord) # temporary
                             
-                    
-                            
+
                             lettre = input("Entrez une lettre: ").lower()
                         
                     #reveal le mot cache if guessed letter right (CORRECTE)
@@ -150,18 +216,24 @@ while True:
                 
             
         elif choix_menu_principal == 2:
-            # MENU Afficher l'historique de l'utilisateur.
-            #x=str(nom_utilisateur)
+            # MENU afficher l'historique de l'utilisateur
+            clear_screen()
+            print("Historique des parties: \n")
             historique_joueur = lire_historique_utilisateur(nom_utilisateur)
-            if a_gagne == True:
-                resultat_match = "gagne"
-            else:
-                resultat_match = "perdu"
-            print(f"Historique des parties: \n {randomWord} -{resultat_match} - {int(duration)}secondes")
-                  
-
+            for partie in historique_joueur:
+                resultat_texte = "gagné" if partie["resultat"] else "perdu"
+                
+                print(f"   {partie['mot']}, {resultat_texte}, {partie['duree']} secondes")
             #print(historique_joueur)
-        
+            print("\n")
+            input("Appuyez sur Enter pour continuer...")
+            clear_screen()
+            print("Menu principal \n"
+                                "1. Commencer une partie \n"
+                                "2. Afficher l'historique \n"
+                                "3. Quitter \n")
+            
+            continue
         else:
             # MENU Afficher un message d'entrée invalide.  
             print("Choix invalide, veuillez reessayer\n")
