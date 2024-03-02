@@ -44,7 +44,7 @@ while True:
             while True:
                 clear_screen()
 
-                # CHOIX = 1 : Demander à l'utilisateur de choisir une difficulté,
+                # CHOIX = 1 : Demander a l'utilisateur de choisir une difficulte,
                 print("Choisissez une difficulte: \n"
                                             "1. Facile \n"
                                             "2. Intermediaire \n"
@@ -56,7 +56,7 @@ while True:
                     difficulte_mapping = {1: "facile", 2: "intermediaire", 3: "difficile"}
                     mots = lire_dictionnaires_mots()
                     
-                # sélectionner un mot aléatoire
+                # selectionner un mot aleatoire
                     if difficulte_selector in difficulte_mapping:
                         difficulte = difficulte_mapping[difficulte_selector]
                         if difficulte in mots:
@@ -200,7 +200,7 @@ while True:
                             end_time = datetime.now()
                             duration = (end_time - start_time).total_seconds()
                             enregistrer_partie(nom_utilisateur, randomWord, a_gagne, int(duration))
-                            print("u won")    
+                            print(f"felicitation {nom_utilisateur}, vous avez devinez le mot {randomWord} en {int(duration)} secondes et {6-lives} tentatives echouees")    
                             input("Appuyez sur Enter pour continuer...")
                             clear_screen()
                             print("Menu principal \n"
@@ -216,13 +216,12 @@ while True:
                 
             
         elif choix_menu_principal == 2:
-            # MENU afficher l'historique de l'utilisateur
+            # MENU afficher historique du player with nom_utilisateur, use fct
             clear_screen()
             print("Historique des parties: \n")
             historique_joueur = lire_historique_utilisateur(nom_utilisateur)
             for partie in historique_joueur:
                 resultat_texte = "gagné" if partie["resultat"] else "perdu"
-                
                 print(f"   {partie['mot']}, {resultat_texte}, {partie['duree']} secondes")
             #print(historique_joueur)
             print("\n")
@@ -235,10 +234,10 @@ while True:
             
             continue
         else:
-            # MENU Afficher un message d'entrée invalide.  
+            # MENU Afficher un message choix invalide not 1,2 or 3
             print("Choix invalide, veuillez reessayer\n")
             
-    # MENU if not digit    
+    # MENU if choix is not digit    
     else:
         print("Choix invalide, veuillez reessayer\n")
         
